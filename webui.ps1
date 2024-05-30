@@ -1,9 +1,10 @@
+# Just use webui-user.ps1
 Set-PSDebug -Off;	#Quiet Powershell
 
 #	`.` == `ls` on Windows
 #	`&` == `call` and move on
 
-if(Test-Path "webui.settings.bat"){ .\webui.settings.bat; }
+if(Test-Path "webui.settings.bat"){ & "webui.settings.bat"; };
 
 ## Set default values if not defined
 if(-not $env:PYTHON){ $env:PYTHON = "C:\\Tools\\Python310\\python.exe"; };
@@ -25,7 +26,7 @@ function showOutput {
 }
 
 ## Make sure tmp exists
-New-Item -ItemType Directory -Force -Path tmp;
+##New-Item -ItemType Directory -Force -Path tmp;
 
 ## do we actually have Python or no:
 & $env:PYTHON "" > tmp/stdout.txt 2> tmp/stderr.txt;
@@ -72,7 +73,7 @@ if($env:ACCELERATE -eq "True"){
 	$env:ACCELERATE = "$env:VENV_DIR\\Scripts\\accelerate.exe";
 	if(Test-Path $env:ACCELERATE){
 		Write-Output "Accelerating"
-		& $env:ACCELERATE launch --num_cpu_threads_per_process=6 launch.py;
+		& $env:ACCELERATE launch --num_cpu_threads_per_process=4 launch.py;
 		if(Test-Path "tmp/restart"){ continue };
 		exit $LASTEXITCODE;
 	}
