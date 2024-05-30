@@ -1,9 +1,9 @@
-Set-PSDebug Off;	# less chatter
+Set-PSDebug -Off;	#Quiet Powershell
 
-#	`.` == `call and wait`
-#	`&` == `call and move on`
+#	`.` == `ls` on Windows
+#	`&` == `call` and move on
 
-if(Test-Path "webui.settings.bat"){ . .\\webui.settings.bat; }
+if(Test-Path "webui.settings.bat"){ .\webui.settings.bat; }
 
 ## Set default values if not defined
 if(-not $env:PYTHON){ $env:PYTHON = "C:\\Tools\\Python310\\python.exe"; };
@@ -28,7 +28,7 @@ function showOutput {
 New-Item -ItemType Directory -Force -Path tmp;
 
 ## do we actually have Python or no:
-& $env:PYTHON -c "" > tmp/stdout.txt 2> tmp/stderr.txt;
+& $env:PYTHON "" > tmp/stdout.txt 2> tmp/stderr.txt;
 if($LASTEXITCODE -ne 0){
 	Write-Output "Couldn't launch python";
 	showOutput;
